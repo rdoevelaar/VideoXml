@@ -8,26 +8,19 @@ import javax.xml.stream.events.*;
 import java.io.FileOutputStream;
 
 public class XmlWriter {
-    private String configFile;
+    private String filename;
 
-    // create an XMLOutputFactory
     private XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-    // create XMLEventWriter
     private XMLEventWriter eventWriter;
-    // create an EventFactory
-    XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-    XMLEvent end = eventFactory.createDTD("\n");
-    XMLEvent tab = eventFactory.createDTD("\t");
+    private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 
-    public void setFile(String configFile) {
-        this.configFile = configFile;
-    }
+    private final XMLEvent end = eventFactory.createDTD("\n");
+    private final XMLEvent tab = eventFactory.createDTD("\t");
+
 
     // Output aanmaken als file met eerste regels.
-    public void createDocument() throws Exception {
-        eventWriter = outputFactory.createXMLEventWriter(new FileOutputStream(configFile));
-        // create an EventFactory
-//        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+    public void createDocument(String filename) throws Exception {
+        eventWriter = outputFactory.createXMLEventWriter(new FileOutputStream(filename));
         // create and write Start Tag
         StartDocument startDocument = eventFactory.createStartDocument();
         eventWriter.add(startDocument);
@@ -35,8 +28,6 @@ public class XmlWriter {
     }
 
     public void createStartElement(String name) throws XMLStreamException {
-
-//        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
         // create Start node
         StartElement sElement = eventFactory.createStartElement("", "", name);
         eventWriter.add(tab);
@@ -46,7 +37,6 @@ public class XmlWriter {
     }
 
     public void createEndElement(String name) throws XMLStreamException {
-//        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
         // create End node
         EndElement eElement = eventFactory.createEndElement("", "", name);
         eventWriter.add(eElement);
@@ -56,8 +46,6 @@ public class XmlWriter {
 
     public void createNode(String name,
                            String value) throws XMLStreamException {
-
-//        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
         // create Start node
         StartElement sElement = eventFactory.createStartElement("", "", name);
         eventWriter.add(tab);
@@ -73,12 +61,8 @@ public class XmlWriter {
     }
 
     public void endDocument() throws XMLStreamException {
-//        XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-//        eventWriter.add(eventFactory.createEndElement("", "", "config"));
-//        eventWriter.add(end);
         eventWriter.add(eventFactory.createEndDocument());
         eventWriter.flush();
         eventWriter.close();
-
     }
 }
